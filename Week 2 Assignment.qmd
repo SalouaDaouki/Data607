@@ -1,0 +1,110 @@
+---
+title: "Week_2_Assignment"
+format: html
+editor: visual
+echo: TRUE
+---
+
+# Movies Ratings
+
+## Collecting Data
+
+To collect the ratings of 6 of the recent popular movies, I created a Google Form and I sent the link to REAL friends. I also rated the movies myself; I watched none of the movies I included in the survey, yet I picked them because I am interested in watching them when I have time. Here is the link to the Google form: <https://forms.gle/9PSCwsAJcQDfvAGPA>
+
+## Connecting pgadmin4 with Rstudio:
+
+### Loading Packages:
+
+```{r importing the package}
+library(RPostgres)
+```
+
+```{r Checking if the connection exists}
+drv <- dbDriver("Postgres")
+con <-dbCanConnect(drv = RPostgres::Postgres(),
+                   dbname = "Movies Ratings",
+                   port = 5432,
+                   user = "postgres",
+                   password = "MOHAMEDChawki2018")
+con
+```
+
+```{r connecting the object}
+con_1 <-dbConnect(drv = RPostgres::Postgres(),
+                   dbname = "Movies Ratings",
+                   port = 5432,
+                   user = "postgres",
+                   password = "MOHAMEDChawki2018")
+con_1
+```
+
+```{r the tables on the database of Movies Ratings}
+dbListTables(con_1)
+```
+
+```{r Getting the data from the table moviesratings}
+dbGetQuery(con_1, "SELECT * FROM moviesratings")
+```
+
+```{r Saving the table in R with the name ratings_df}
+ratings_df <- dbGetQuery(con_1, "SELECT * FROM moviesratings")
+```
+
+```{r loading packages for later analysis}
+library(tidyverse)
+library(ggthemes)
+library(gt)
+library(ggplot2)
+echo = FALSE
+```
+
+```{r making the table better}
+gt(ratings_df)
+```
+
+```{r beutifying the table}
+ratings_df %>%
+  dplyr::select(1:7) %>%
+  dplyr::slice(1:18) %>% 
+  gt(rowname_col = "Names of Respondents") %>%
+  tab_spanner(label = "Movies Rated", columns = matches("1.|2.|3.|4.|5.|6.")) %>%
+  tab_header(
+    title = md("*Six Popular Movies Ratings*")
+  ) %>%
+  opt_stylize(style = 6) 
+```
+
+```{r calculating the rating average for each movie}
+mean1 <- round(mean(ratings_df$`1. Avengers: Endgame:`, na.rm = TRUE),2)
+mean2 <- round(mean(ratings_df$`2. The Little Mermaid`, na.rm = TRUE),2)
+mean3 <- round(mean(ratings_df$`3. Booksmart`, na.rm = TRUE),2)
+mean4 <-round(mean(ratings_df$`4. Talk to Me`, na.rm=TRUE),2)
+mean5 <- round(mean(ratings_df$`5. Interstellar`, na.rm=TRUE),2)
+mean6 <- round(mean(ratings_df$`6. The Irishman`, na.rm = TRUE),2)
+```
+
+```{r making a table with all calculaed averages}
+Average_ratings = data.frame(Movie_Name=c('Avengers: Endgame','The Little Mermaid', 'Booksmart', 'Talk To Me', 'Interstellar', 'The Irishman'),
+  Avg_ratings=c(mean1, mean2, mean3, mean4, mean5,mean6))
+print(Average_ratings)
+```
+
+## Visualizing the data:
+
+```{r creating a bar graph to visualize the winning movie}
+ggplot(data = Average_ratings, ) + geom_bar(mapping = aes(x = Movie_Name, y = Avg_ratings ), stat = "identity")
+```
+
+```{r transposing the original table to calculate the user average}
+ratings_df2 <- data.frame(t(ratings_df))
+print(ratings_df2)
+```
+
+## Conclusion:
+
+After calculating the Global Baseline Estimate using Excel, I found it was 3.89. Considering 3.89 as an average threshold, the most recommended movies are "Avengers: Endgame", "Interstellar", and " The Irishman". The movies that were rated have different Genres which makes it though to recommend any movie to any of the respondents, especially to Saloua and Sara. They both happened to not watch any of these movies. Based on the average ratings of each movie, the Irishman got the greatest average of all "4.17"
+
+## References:
+
+-   *"A Simple Guide On Connecting Rstudio to a PostgreSQL Database"* <https://medium.com/geekculture/a-simple-guide-on-connecting-rstudio-to-a-postgresql-database-9e35ccdc08be>
+-   "*Great Looking Tables: gt (v0.2)"* <https://posit.co/blog/great-looking-tables-gt-0-2/>
