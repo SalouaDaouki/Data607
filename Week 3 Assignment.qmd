@@ -1,0 +1,98 @@
+---
+title: "Week 3 assignment"
+format: html
+editor: visual
+echo: TRUE
+---
+
+## 1. Reading the Data from Github to RStudio
+
+```{r Data reading}
+library(tidyverse)
+library(readr)
+Majors <- read.csv("https://raw.githubusercontent.com/SalouaDaouki/Data607/main/all-ages.csv")
+summary(Majors)
+```
+
+```{r}
+view(Majors)
+```
+
+## 2. Getting the majors that contain "DATA" and "STATISTICS"
+
+```{r data_stat majors method1}
+data_stat_mjrs <- str_subset(Majors$Major, "DATA|STATISTICS")
+show(data_stat_mjrs)
+```
+
+```{r data_stat majors method 2}
+data_stat <- grep("DATA|STATISTICS", Majors$Major, value= TRUE, ignore.case = TRUE)
+show(data_stat)
+```
+
+## 3. Transforming the data below:
+
+\[1\] "bell pepper" "bilberry" "blackberry" "blood orange" \[5\] "blueberry" "cantaloupe" "chili pepper" "cloudberry"\
+\[9\] "elderberry" "lime" "lychee" "mulberry"\
+\[13\] "olive" "salal berry"
+
+```{r}
+Food <- c("bell pepper", "bilberry","blackberry","blood orange",
+          "blueberry", "cantaloupe","chili pepper", "cloudberry",
+          "elderberry", "lime", "lychee","mulberry",
+          "olive","salal berry")
+print(Food)
+```
+```{r}
+unlist(Food, recursive = TRUE, use.names = TRUE)
+```
+```{r}
+Food_list <- as_vector(Food)
+print(Food_list)
+```
+
+## 4. Explaining the expressions:  
+  
+```{r}
+library (stringr)
+list <- c("banana","555555","AA1ab","aaapple", "church", "aaaa", "cooc", "abba", "1212")
+str_view(list, "(.)\1\1")
+```
+
+"(.)\1\1" this expression matches the strings that have repeated characters 2 times.
+
+```{r}
+str_view(list,"(.)(.)\2\1")
+```
+"(.)(.)\2\1" matches the strings that have two consecutive characters
+
+
+```{r}
+str_view(list,"(..)\1")
+```
+"(..)\1" matches the groups of characters that are repeated, it is not neccassary to be the same letter.
+
+```{r}
+str_view(list,"(.)(.)(.).*\3\2\1")
+```
+"(.)(.)(.).*\3\2\1" this expression matches the strings that have repeated characters 3 times.
+
+```{r}
+str_view(list, "(.)\\1") 
+```
+
+## 4. strings
+
+start and end of the string:
+```{r}
+str_view (list, "^(..).*\\1$")
+```
+repeated pair of letters
+```{r}
+str_view (list, "(..)\\1")
+```
+repeated pair of letters
+```{r}
+str_view (list, ".([A-Za-z]).\1.\1.")
+```
+
