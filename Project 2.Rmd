@@ -1,0 +1,298 @@
+---
+title: "Project 2- Data607"
+author: "Saloua Daouki"
+date: "2023-10-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction:
+
+The goal of this assignment is to give you practice in preparing different datasets for downstream analysis work. I picked the following three data sets from Kaggle:
+
+-   Students Performance,
+
+-   Airline Dataset,
+
+-   Diabetes Data.
+
+## Students Performance:
+
+The purpose of this data was to predict students' end-of-term performance using ML techniques. The data was collected through a survey that includes 10 personal questions, 6 family questions and the rest is about their education habits. The data and its information could be found [here](https://www.kaggle.com/datasets/joebeachcapital/students-performance) . The data was given in the .csv format, so I just upload it in my github and load it here:
+
+### Loading Data1:
+
+```{r Students_Performance_Data}
+url <- 'https://raw.githubusercontent.com/SalouaDaouki/Data607/main/StudentsPerformance.csv'
+dfSP <- read.csv(file = url)
+head(dfSP)
+```
+
+Looking at the data, there are only numbers which were explained in the [website where I got the data](https://www.kaggle.com/datasets/joebeachcapital/students-performance), so I am going to change the names of the columns to reflect what they are exactly and to make sense for the reader.
+
+### Cleaning and Transforming Data:
+
+```{r Renaming_the_columns}
+new_col_names <- c("StudentID", "Student_Age","Sex", "Graduated_HS_type","Scholarship_Type","Additional_Work","Regular_Artistic_or_Sport_activity","Having_a_partner","Total_salary_ifAvalaible", "Transportaion_to_University","Accomodation Type", "Mothers_Education", "Fathers_Education", "Number_of_siblings", "Parental_status", "Mother_occupation","Father_occupation",
+"Weekly_study_hours","Reading_frequency_non_scientific", "Reading_frequency_scientific", "Attending_department_conferences", "Impact_of_projectsAndActivities_on_success", "Attendance_to_classes", "Preparation_to_midterm_exams_with", "Preparation_to_midterm_exams_when", "Taking_notes_in_class", "Listening_in_class", "Discussion_improves_my_success", "Change_classroom", "My_last_semester_GPA", "Expected_Graduation_GPA", "CourseID", "output_grade")
+colnames(dfSP) <- new_col_names
+head(dfSP)
+```
+
+```{r renaming_the_values_in_each_column}
+dfSP$Student_Age [dfSP$Student_Age == 1] <- "18-21"
+dfSP$Student_Age [dfSP$Student_Age == 2] <- "22-25"
+dfSP$Student_Age [dfSP$Student_Age == 3] <- "above 26"
+dfSP$Sex [dfSP$Sex == 1] <- "F"
+dfSP$Sex [dfSP$Sex == 2] <- "M"
+dfSP$Graduated_HS_type [dfSP$Graduated_HS_type == 1] <- "private"
+dfSP$Graduated_HS_type [dfSP$Graduated_HS_type == 2] <- "state"
+dfSP$Graduated_HS_type [dfSP$Graduated_HS_type == 3] <- "other"
+dfSP$Scholarship_Type [dfSP$Scholarship_Type == 1] <- "None"
+dfSP$Scholarship_Type [dfSP$Scholarship_Type == 2] <- "25%"
+dfSP$Scholarship_Type [dfSP$Scholarship_Type == 3] <- "50%"
+dfSP$Scholarship_Type [dfSP$Scholarship_Type == 4] <- "75"
+dfSP$Scholarship_Type [dfSP$Scholarship_Type == 5] <- "Full"
+dfSP$Additional_Work [dfSP$Additional_Work == 1] <- "Yes"
+dfSP$Additional_Work [dfSP$Additional_Work == 2] <- "No"
+dfSP$Regular_Artistic_or_Sport_activity [dfSP$Regular_Artistic_or_Sport_activity == 1] <- "Yes"
+dfSP$Regular_Artistic_or_Sport_activity [dfSP$Regular_Artistic_or_Sport_activity == 2] <- "No"
+dfSP$Having_a_partner [dfSP$Having_a_partner == 1] <- "Yes"
+dfSP$Having_a_partner [dfSP$Having_a_partner == 2] <- "No"
+dfSP$Total_salary_ifAvalaible [dfSP$Total_salary_ifAvalaible == 1] <- "$135-$200"
+dfSP$Total_salary_ifAvalaible [dfSP$Total_salary_ifAvalaible == 2] <- "$201-$270"
+dfSP$Total_salary_ifAvalaible [dfSP$Total_salary_ifAvalaible == 3] <- "$271-$340"
+dfSP$Total_salary_ifAvalaible [dfSP$Total_salary_ifAvalaible == 4] <- "$341-$410"
+dfSP$Total_salary_ifAvalaible [dfSP$Total_salary_ifAvalaible == 5] <- "above $410"
+dfSP$Transportaion_to_University [dfSP$Transportaion_to_University == 1] <- "Bus"
+dfSP$Transportaion_to_University [dfSP$Transportaion_to_University == 2] <- "Private car/taxi"
+dfSP$Transportaion_to_University [dfSP$Transportaion_to_University == 3] <- "Bicycle"
+dfSP$Transportaion_to_University [dfSP$Transportaion_to_University == 4] <- "Other"
+dfSP$`Accomodation Type` [dfSP$`Accomodation Type` == 1] <- "Rental"
+dfSP$`Accomodation Type` [dfSP$`Accomodation Type` == 2] <- "Dormitory"
+dfSP$`Accomodation Type` [dfSP$`Accomodation Type` == 3] <- "With Family"
+dfSP$`Accomodation Type` [dfSP$`Accomodation Type` == 4] <- "Other"
+dfSP$Mothers_Education [dfSP$Mothers_Education == 1] <- "Primary School"
+dfSP$Mothers_Education [dfSP$Mothers_Education == 2] <- "Secondary School"
+dfSP$Mothers_Education [dfSP$Mothers_Education == 3] <- "High School"
+dfSP$Mothers_Education [dfSP$Mothers_Education == 4] <- "college"
+dfSP$Mothers_Education [dfSP$Mothers_Education == 5]<- "Masters"
+dfSP$Mothers_Education [dfSP$Mothers_Education == 6] <- "Ph.D."
+dfSP$Fathers_Education [dfSP$Fathers_Education == 1] <- "Primary School"
+dfSP$Fathers_Education [dfSP$Fathers_Education == 2] <- "Secondary School"
+dfSP$Fathers_Education [dfSP$Fathers_Education == 3] <- "High School"
+dfSP$Fathers_Education [dfSP$Fathers_Education == 4] <- "college"
+dfSP$Fathers_Education [dfSP$Fathers_Education == 5]<- "Masters"
+dfSP$Fathers_Education [dfSP$Fathers_Education == 6] <- "Ph.D."
+dfSP$Number_of_siblings [dfSP$Number_of_siblings == 5] <- "5 or above"
+dfSP$Parental_status [dfSP$Parental_status == 1] <- "Married"
+dfSP$Parental_status [dfSP$Parental_status == 2] <- "Divorced"
+dfSP$Parental_status [dfSP$Parental_status == 3] <- "died_one or both"
+dfSP$Mother_occupation [dfSP$Mother_occupation == 1] <- "retired"
+dfSP$Mother_occupation [dfSP$Mother_occupation == 2] <- "government officer"
+dfSP$Mother_occupation [dfSP$Mother_occupation == 3] <- "private sector employee"
+dfSP$Mother_occupation [dfSP$Mother_occupation == 4] <- "self_employment"
+dfSP$Mother_occupation [dfSP$Mother_occupation == 5] <- "other"
+dfSP$Father_occupation [dfSP$Father_occupation == 1] <- "retired"
+dfSP$Father_occupation [dfSP$Father_occupation == 2] <- "government officer"
+dfSP$Father_occupation [dfSP$Father_occupation == 3] <- "private sector employee"
+dfSP$Father_occupation [dfSP$Father_occupation == 4] <- "self_employment"
+dfSP$Father_occupation [dfSP$Father_occupation == 5] <- "other"
+dfSP$Weekly_study_hours [dfSP$Weekly_study_hours == 1] <- "0"
+dfSP$Weekly_study_hours [dfSP$Weekly_study_hours == 2] <- "1-5"
+dfSP$Weekly_study_hours [dfSP$Weekly_study_hours == 3] <- "6-10"
+dfSP$Weekly_study_hours [dfSP$Weekly_study_hours == 4] <- "11-20"
+dfSP$Weekly_study_hours [dfSP$Weekly_study_hours == 5] <- "20"
+dfSP$Reading_frequency_non_scientific [dfSP$Reading_frequency_non_scientific == 1] <- "None"
+dfSP$Reading_frequency_non_scientific [dfSP$Reading_frequency_non_scientific == 2] <- "sometimes"
+dfSP$Reading_frequency_non_scientific [dfSP$Reading_frequency_non_scientific == 3] <- "often"
+dfSP$Reading_frequency_scientific [dfSP$Reading_frequency_scientific == 1] <- "None"
+dfSP$Reading_frequency_scientific [dfSP$Reading_frequency_scientific == 2] <- "sometimes"
+dfSP$Reading_frequency_scientific [dfSP$Reading_frequency_scientific == 3] <- "often"
+dfSP$Attending_department_conferences [dfSP$Attending_department_conferences == 1] <- "Yes"
+dfSP$Attending_department_conferences [dfSP$Attending_department_conferences == 2] <- "No"
+dfSP$Impact_of_projectsAndActivities_on_success [dfSP$Impact_of_projectsAndActivities_on_success == 1] <- "Positive"
+dfSP$Impact_of_projectsAndActivities_on_success [dfSP$Impact_of_projectsAndActivities_on_success == 2] <- "Negative"
+dfSP$Impact_of_projectsAndActivities_on_success [dfSP$Impact_of_projectsAndActivities_on_success == 3] <- "Neutral"
+dfSP$Attendance_to_classes [dfSP$Attendance_to_classes == 1] <- "Always"
+dfSP$Attendance_to_classes [dfSP$Attendance_to_classes == 2] <- "Sometimes"
+dfSP$Attendance_to_classes [dfSP$Attendance_to_classes == 3] <- "Never"
+dfSP$Preparation_to_midterm_exams_with [dfSP$Preparation_to_midterm_exams_with == 1] <- "alone"
+dfSP$Preparation_to_midterm_exams_with [dfSP$Preparation_to_midterm_exams_with == 2] <- "with friends"
+dfSP$Preparation_to_midterm_exams_with [dfSP$Preparation_to_midterm_exams_with == 3] <- "NA"
+dfSP$Preparation_to_midterm_exams_when [dfSP$Preparation_to_midterm_exams_when == 1] <- "closest date to the exam"
+dfSP$Preparation_to_midterm_exams_when [dfSP$Preparation_to_midterm_exams_when == 2] <- "regularly during the semester"
+dfSP$Preparation_to_midterm_exams_when [dfSP$Preparation_to_midterm_exams_when == 3] <- "never"
+dfSP$Taking_notes_in_class [dfSP$Taking_notes_in_class == 1] <- "never"
+dfSP$Taking_notes_in_class [dfSP$Taking_notes_in_class == 2] <- "sometimes"
+dfSP$Taking_notes_in_class [dfSP$Taking_notes_in_class == 3] <- "always"
+dfSP$Listening_in_class [dfSP$Listening_in_class == 1] <- "never"
+dfSP$Listening_in_class [dfSP$Listening_in_class == 2] <- "sometimes"
+dfSP$Listening_in_class [dfSP$Listening_in_class == 3] <- "always"
+dfSP$Discussion_improves_my_success [dfSP$Discussion_improves_my_success == 1] <- "never"
+dfSP$Discussion_improves_my_success [dfSP$Discussion_improves_my_success == 2] <- "sometimes"
+dfSP$Discussion_improves_my_success [dfSP$Discussion_improves_my_success == 3] <- "always"
+dfSP$Change_classroom [dfSP$Change_classroom == 1] <- "not useful"
+dfSP$Change_classroom [dfSP$Change_classroom == 2] <- "useful"
+dfSP$Change_classroom [dfSP$Change_classroom == 3] <- "NA"
+dfSP$My_last_semester_GPA [dfSP$My_last_semester_GPA == 1] <- "< 2.00"
+dfSP$My_last_semester_GPA [dfSP$My_last_semester_GPA == 2] <- "2.00-2.49"
+dfSP$My_last_semester_GPA [dfSP$My_last_semester_GPA == 3] <- "2.50-2.99"
+dfSP$My_last_semester_GPA [dfSP$My_last_semester_GPA == 4] <- "3.00-3.49"
+dfSP$My_last_semester_GPA [dfSP$My_last_semester_GPA == 5] <- "3.50"
+dfSP$Expected_Graduation_GPA [dfSP$Expected_Graduation_GPA == 1] <- "<2.00"
+dfSP$Expected_Graduation_GPA [dfSP$Expected_Graduation_GPA == 2] <- "2.00-2.49"
+dfSP$Expected_Graduation_GPA [dfSP$Expected_Graduation_GPA == 3] <- "2.50-2.99"
+dfSP$Expected_Graduation_GPA [dfSP$Expected_Graduation_GPA == 4] <- "3.00-3.49"
+dfSP$Expected_Graduation_GPA [dfSP$Expected_Graduation_GPA == 5] <- ">3.49"
+dfSP$output_grade [dfSP$output_grade == 0] <- "Fail"
+dfSP$output_grade [dfSP$output_grade == 1] <- "DD"
+dfSP$output_grade [dfSP$output_grade == 2] <- "DC"
+dfSP$output_grade [dfSP$output_grade == 3] <- "CC"
+dfSP$output_grade [dfSP$output_grade == 4] <- "CB"
+dfSP$output_grade [dfSP$output_grade == 5] <- "BB"
+dfSP$output_grade [dfSP$output_grade == 6] <- "BA"
+dfSP$output_grade [dfSP$output_grade == 7] <- "AA"
+head(dfSP)
+```
+
+### Analysis:
+
+#### Glimpse of the data:
+
+```{r glimpse of the data}
+library(tidyverse)
+glimpse(dfSP)
+```
+
+#### Visualize the data:
+
+I will be using geom-point to see if there is a correlation between last semester GPA, weekly hours spent studying, the number of hours spent studying in weekly basis and whether they attend class or not.
+
+```{r}
+transform(dfSP, My_last_semester_GPA = as.numeric(My_last_semester_GPA))
+transform(dfSP, Weekly_study_hours = as.numeric(Weekly_study_hours))
+```
+
+```{r visualizing the relationship }
+library(ggplot2)
+ggplot(dfSP, aes(x = My_last_semester_GPA, fill = Weekly_study_hours)) +
+  geom_bar() +
+  labs(title = substitute(paste(italic("Is there a relationship between GPA and # of hours spent studying?"))))
+```
+
+The majority of students tend to spend between 1 to 5 hours studying in weekly basis including the students who have higher GPA than 3.50.
+
+```{r}
+ggplot(dfSP, aes(x = My_last_semester_GPA, fill = Preparation_to_midterm_exams_when )) +
+  geom_bar()+
+  labs(title = substitute(paste(italic("Is there a relationship between GPA and when students start preparing for their midterm exams?"))))
+```
+
+All students tend to study for their midterm exams close to the date of the exams, however, the number of students who study regularly during the semester increases as the GPA increases.
+
+```{r}
+ggplot(dfSP, aes(x = My_last_semester_GPA, y = Expected_Graduation_GPA)) +
+  geom_point(aes(color = Taking_notes_in_class, shape = Listening_in_class)) +
+  labs(title = substitute(paste(italic("Is there a relationship between GPA and expected GPA and whether students pay attention in class or not?"))))
+```
+
+I looked for a red circle (a student who always takes notes and listens in class), but It is not there. In other words, There is no student who is always taking notes and listening in class at the same time.
+
+### Conclusion:
+
+It was not as expected; the number of hours spent studying every week, studying regularly during the semester and always paying attention in class don't have much effect on getting higher GPA.
+
+## Airline Data set:
+
+This data is important as it provides an overview insights of the functioning and efficiency of the airplanes industry. By analyzing these data, policymakers can implement strategies to ensure safety and to improve the overall of the aviation sector.
+
+### Loading Data2:
+
+```{r Airline_Data}
+url1 <- 'https://raw.githubusercontent.com/SalouaDaouki/Data607/main/Airline%20Dataset%20Updated%20-%20v2.csv'
+dfAirline <- read.csv(file = url1)
+head(dfAirline)
+```
+
+### Transforming and Cleaning Data2
+
+I am selecting only three column that I am going to see if there is any relationship between them; the name of the country of the airport where the airplane departed from, the destination airport and the status of the flight; whether is on time, delayed or canceled.
+
+```{r}
+Data_US <- subset(dfAirline, Nationality == 'United States',
+                  select = Gender : Flight.Status)
+head(Data_US)
+```
+
+### Analysis:
+
+```{r}
+library(ggplot2)
+ggplot(dfAirline, aes(x = Flight.Status, fill = Arrival.Airport)) +
+  geom_bar() +
+  labs(title = substitute(paste(italic("Is there a relationship between flight status and the destination airport in US?"))))
+```
+
+```{r}
+ggplot(data=dfAirline, aes(x=Flight.Status, fill= Arrival.Airport)) +
+  geom_bar (stat = "count", position = position_dodge())+
+  labs(title = substitute(paste(italic("Is there a relationship between flight status and the destination airport in the world?"))))
+```
+
+```{r}
+ggplot (dfAirline, aes(x = Age, fill = Gender)) +
+  geom_bar()
+```
+
+```{r}
+ggplot (dfAirline, aes(x = Nationality, fill = Airport.Name)) +
+  geom_bar()
+```
+
+### Conclusion:
+
+## Diabetes:
+
+This data was collected from a specefic range of diabetes patients who are female aged 21 year old and up with Pima Indian heritage (**North American Indians who traditionally lived along the Gila and Salt rivers in Arizona, U.S., in what was the core area of the prehistoric Hohokam culture**). The reference of the data can be found [here](https://www.kaggle.com/datasets/salihacur/diabetes/data).
+
+### Loading Data3: 
+
+```{r loading Diabetes data}
+url2 <- 'https://raw.githubusercontent.com/SalouaDaouki/Data607/main/diabetes.csv'
+dfD <- read.csv(file = url2)
+head(dfD)
+```
+
+### Transforming and Cleaning Data3:
+
+```{r selecting only pregnacies greater than 3}
+Diabetes_3preg <- subset(dfD, Pregnancies >=3,
+                  select = Pregnancies : Outcome)
+head(Diabetes_3preg)
+```
+
+### Analysis:
+
+```{r}
+ggplot(Diabetes_3preg, aes(x = Age, y = Glucose )) +
+  geom_point(aes(color=Pregnancies)) 
+```
+
+```{r}
+ggplot(Diabetes_3preg, aes(x = Glucose, y = Insulin )) +
+  geom_point(aes(color=Pregnancies)) 
+```
+
+### Conclusion:
+
+It seems that with less pregnancies (4-8), females tend to have more Glucose level, while the light blue dots (pregnancies of more than 12) are spread int he middle which is little less glucose level than the dark blue dots.
+
+In addition, as the glucose level increases the insuline increase as well.
+
+# References:
+
+<https://www.kaggle.com/datasets/joebeachcapital/students-performance>
