@@ -1,0 +1,176 @@
+---
+title: 'Assignment #5'
+author: "Saloua Daouki"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Loading the necessary packages
+
+```{r packages}
+library(tidyverse)
+library(readr)
+library(gt)
+```
+
+## Creating the data frame:
+
+I tried to create the data in the R markdown just to see if I can do it:
+
+```{r delays data frame}
+delays <- data.frame(airlines = c("ALASKA", "", "", "AM_WEST", ""),
+                     status = c("On_time", "Delayed", "", "On_time", "Delayed"),
+                     Los_Angeles = c(497, 62, NA, 694, 117), 
+                     Phoenix = c(221, 12, NA, 4840, 415), 
+                     San_Diego =c(212, 20, NA, 383, 65), 
+                     San_Francisco = c(503, 102, NA, 320, 129), 
+                     Seattle = c(1841, 305, NA, 201, 61))
+delays
+```
+
+```{r}
+delays1 <- gt(delays)
+delays1
+```
+
+```{r}
+gt_tbl <- 
+  delays |>
+  gt(rowname_col = "airlines")
+gt_tbl
+```
+
+```{r converting the dataframe into .csv file}
+write.csv(delays, file = "delays.csv")
+```
+
+## Loading the data as .csv file:
+
+```{r}
+url_de <- "https://raw.githubusercontent.com/SalouaDaouki/Data607/main/airlinesDelays.csv"
+Air_delays <- read.csv(file = url_de )
+Air_delays
+```
+
+## Transforming the data:
+
+```{r rename the first and second colummns}
+colnames(Air_delays)[1] <- "airlines"
+colnames(Air_delays)[2] <- "Status"
+Air_delays
+```
+
+```{r droping the na row}
+Air_delays <- drop_na(Air_delays)
+Air_delays
+```
+
+```{r fill in the blanks}
+Air_delays[Air_delays==""]<-NA
+Air_delays <- Air_delays %>% fill(airlines, .direction = 'down')
+Air_delays
+```
+
+## Tidying the data:
+
+pivot_longer(data = data.frame, cols = columns.to.pivot, names_to = "New Column Name", values_to = "New Column Name")
+
+```{r making long format}
+Air_delays_long <- Air_delays %>% 
+  pivot_longer(
+    cols = !c("airlines","Status"), 
+    names_to = "Destination", 
+    values_to = "Status_freq",
+    values_drop_na = TRUE,
+  )
+```
+
+```{r visualizing the long format}
+Air_delays_long
+```
+
+```{r getting rid of the dot in the destination names}
+Air_delays_long$Destination <- str_replace_all(Air_delays_long$Destination, "\\.", " ")
+Air_delays_long
+```
+
+## Analyzing the data:
+
+```{r}
+ALASKA_status <- Air_delays_long |> 
+  filter(airlines == 'ALASKA')
+ALASKA_status
+```
+
+```{r}
+ggplot(ALASKA_status, aes(x = Status_freq, color = Status)) +
+  geom_density(linewidth = 0.75)
+```
+
+```{r}
+AMWEST_status <- Air_delays_long |> 
+  filter(airlines == 'AM WEST')
+AMWEST_status
+```
+
+```{r}
+ggplot(AMWEST_status, aes(x = Status_freq, color = Status)) +
+  geom_density(linewidth = 0.75)
+```
+
+```{r by airlines}
+Airlines_df <-
+  Air_delays_long %>% 
+    group_by(airlines) %>%
+      summarise(
+        Total_flights = sum(Status_freq),
+        Total_delays = sum(ifelse(Status=='delayed', Status_freq, 0))
+      )
+
+Airlines_df <- 
+  Airlines_df %>%
+    mutate(
+        Total_on_time = Total_flights - Total_delays,
+        delay_percent = round((Total_delays / Total_flights) *100,2),
+        on_time_percent = round(((Total_flights - Total_delays) / Total_flights)*100,2)
+    ) %>%
+      arrange(delay_percent)
+Airlines_df
+```
+
+Both airlines have less than 15% of delayed flights; Alaska has 3% difference of delays compared to AM West even thoug Am West airlines have more flights and more number of delayed flights. Meaning that AM West has more on time flights than Alaska.
+
+Now let's see destination wise:
+
+```{r by destination}
+Destination_df <-
+  Air_delays_long %>% 
+    group_by(Destination) %>%
+      summarise(
+        Total_flights = sum(Status_freq),
+        Total_delays = sum(ifelse(Status=='delayed', Status_freq, 0))
+      )
+
+Destination_df <- 
+  Destination_df %>%
+    mutate(
+        Total_on_time = Total_flights - Total_delays,
+        delay_percent = round((Total_delays / Total_flights) *100,2),
+        on_time_percent = round(((Total_flights - Total_delays) / Total_flights)*100,2)
+    ) %>%
+      arrange(delay_percent)
+Destination_df
+```
+
+Based on the table above, Phoenix tends to have more percentage (92%) of on_time flights, followed by San Diego. On the other hand, San Francisco seems to have more percentage of delayed flights.
+
+## Converting the data into .CSV files
+
+```{r}
+write.csv(Air_delays_long, file = "Air_delays_long.csv")
+write.csv(Airlines_df, file = "Airlines_df.csv")
+write.csv(Destination_df, file = "Destination_df.csv")
+```
