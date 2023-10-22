@@ -2,7 +2,7 @@
 <Books_data>
     <book id = "1">
         <Title>The language of SQL</Title>
-        <Author>"Larry Rockoff"</Author>
+        <Author Author1="Larry Rockoff" Author2 = "Mark Taber"/>
         <Edition>2nd</Edition>
         <Year>2017</Year>
         <Publisher>Pearson Education,inc.</Publisher>
@@ -18,7 +18,7 @@
     </book>
     <book id = "3">
         <Title>Teach Like a Champion 3.0</Title>
-        <Author>"Doug Lemov"</Author>
+        <Author Author1="Doug Lemov" Author2 = "Paul McCarthy"/>
         <Edition>3rd</Edition>
         <Year>2021</Year>
         <Publisher>A Wiley Imprint</Publisher>
