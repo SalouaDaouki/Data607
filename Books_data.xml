@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Books_data>
+    <book id = "1">
+        <Title>The language of SQL</Title>
+        <Author>"Larry Rockoff"</Author>
+        <Edition> 2nd</Edition>
+        <Year›2017</Year>
+        <Published by> Pearson Education,inc.</Published by>
+        <ISBN>978-0-13-465825-4</ISBN>
+    </book>
+     <book id = "2">
+        <Title>Data Science for Business</Title>
+        <Author Author1 ="Foster Provost" Author2 = "Tom Fawcett"/>
+        <Edition> 1st</Edition>
+        <Year›2013</Year>
+        <Published by> O'Reilly Media,inc.</Published by>
+        <ISBN>978-1-449-36132-7</ISBN>
+    </book>
+     <book id = "3">
+        <Title>Teach Like a Champion 3.0</Title>
+        <Author>"Doug Lemov"</Author>
+        <Edition> 3rd</Edition>
+        <Year›2021</Year>
+        <Published by> A Wiley Imprint</Published by>
+        <ISBN>9781119712619</ISBN>
+    </book>
+<Books_data>
