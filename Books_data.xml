@@ -8,7 +8,7 @@
         <Publisher>Pearson Education,inc.</Publisher>
         <ISBN>978-0-13-465825-4</ISBN>
     </book>
-     <book id = "2">
+    <book id = "2">
         <Title>Data Science for Business</Title>
         <Author Author1 ="Foster Provost" Author2 = "Tom Fawcett"/>
         <Edition>1st</Edition>
@@ -16,7 +16,7 @@
         <Publisher>O'Reilly Media,inc.</Publisher>
         <ISBN>978-1-449-36132-7</ISBN>
     </book>
-     <book id = "3">
+    <book id = "3">
         <Title>Teach Like a Champion 3.0</Title>
         <Author>"Doug Lemov"</Author>
         <Edition>3rd</Edition>
