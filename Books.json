@@ -1,7 +1,7 @@
 {"Books_data" :[
         {
         "Title" : "The language of SQL",
-        "Author" : ["Larry Rockoff", "Mark Taber"]
+        "Author" : ["Larry Rockoff", "Mark Taber"],
         "Edition" : "2nd",
         "Year" : 2017,
         "Publisher" : "Pearson Education,inc.",
@@ -9,7 +9,7 @@
         },
         {
         "Title" : "Data Science for Business",
-        "Author" : ["Foster Provost", "Tom Fawcett"]
+        "Author" : ["Foster Provost", "Tom Fawcett"],
         "Edition" : "1st",
         "Year" : 2013,
         "Publisher" : "O'Reilly Media,inc.",
@@ -17,7 +17,7 @@
         },
         {
         "Title" : "Teach Like a Champion 3.0",
-        "Author" : ["Doug Lemov", "Paul McCarthy"]
+        "Author" : ["Doug Lemov", "Paul McCarthy"],
         "Edition" : "3rd",
         "Year" : 2021,
         "Publisher" : "A Wiley Imprint",
