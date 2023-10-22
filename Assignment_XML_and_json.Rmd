@@ -1,0 +1,99 @@
+---
+title: "Assignment – Working with XML and JSON in R"
+author: "Saloua Daouki"
+date: "2023-10-21"
+output: html_document
+---
+
+## Loading the necessary packages:
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(XML)
+library(rvest)
+library(RCurl)
+library(jsonlite)
+```
+
+## 1. Introduction:
+
+I picked three of the books that I currently have in hard copy and I only read some of each; two books are for data science (the language of SQL and Data Science for Business) and the third is to teach me some strategies for classroom management as a teacher (Teach Like a Champion).
+
+## 2. Loading the books data as html:
+
+```{r Books}
+url <- getURL('https://raw.githubusercontent.com/SalouaDaouki/Data607/main/Books.html')
+books_HTML <- url %>%
+  read_html(encoding = 'UTF-8') %>%
+  html_table(header = NA, trim = TRUE) %>%
+  .[[1]]
+
+books_HTML
+```
+
+```{r}
+str(books_HTML)
+```
+
+## 3. Loading the books data as xml
+
+```{r}
+url <- getURL('https://raw.githubusercontent.com/SalouaDaouki/Data607/main/Books_data.xml')
+books_XML <- url %>%
+  xmlParse() %>%
+  xmlRoot() %>%
+  xmlToDataFrame(stringsAsFactors = FALSE)
+books_XML
+```
+
+```{r}
+library(xml2)
+Author_attr <- url %>%
+  read_xml() %>%
+  xml_nodes(xpath = '//Author') %>%
+  xml_attrs() %>%
+  lapply(function(x) str_c(x, collapse=', ')) %>%
+  unlist()
+Author_attr
+```
+
+```{r}
+books_XML <- books_XML %>% mutate(Author = Author_attr)
+
+books_XML
+```
+
+```{r}
+str(books_XML)
+```
+
+## 4. Loading the data as json:
+
+```{r}
+url <- getURL("https://raw.githubusercontent.com/SalouaDaouki/Data607/main/Books.json")
+books_JSON <- url %>%
+  fromJSON() %>%
+  as.data.frame() %>%
+  rename_all(funs(str_replace(., 'Books\\.data\\.',''))) %>%
+  mutate(Author = unlist(lapply(Author, function(x) str_c(x, collapse = ', '))))
+books_JSON
+```
+
+```{r}
+str(books_JSON)
+```
+
+## 5. Are the three data frames identical?
+
+All frames are identical in size; 3 observations with 6 variables, however;
+
+-   Based on str(), the variable "Year" in **html** and **json** frames is loaded as integer while in the **XML** frame is loaded as character.
+
+-   To read all frames, I used, in general the same code (getURL followed by the path), except for html I didn't need to convert the table into data frame as I needed for XML and json.
+
+-   After reading the frames into r, all tables were identical.
+
+## 6. Conclusion:
+
+All my group memebers for project 3 said that this assignment is very simple, which made me feel voiceless. It took me very long time to figure things out in every single assignment since the beginning of the semester. Finally and more importantly is that I did it; I think?!
