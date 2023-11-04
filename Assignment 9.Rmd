@@ -1,0 +1,91 @@
+---
+title: "Assignment 9- Data 607"
+author: "Saloua Daouki"
+date: "2023-11-04"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction:
+
+The goal of this asssignment is to choose one of [the New York Times APIs](https://developer.nytimes.com/apis), construct an interface in R to read in the JSON data, and transform it into an R DataFrame. 
+So I picked two sections from the Top Stories API:
+
+-books/review
+
+-sunday review
+
+## Loading Libraries:
+
+The libraries will be used in this assignment are tidyverse for tidying the data, and jsonlite to import the data.
+
+```{r }
+library(tidyverse)
+library(jsonlite)
+library(stringr)
+```
+
+## Importing the data:
+### Read the json files:
+
+```{r pressure, echo=FALSE}
+my_api_key <- "lC1J9EyT9ivGEdysMWXvgjd2D5bGQZMo"
+url <- paste("https://api.nytimes.com/svc/topstories/v2/books/review.json?api-key=", my_api_key, sep='')
+url1 <- paste("https://api.nytimes.com/svc/topstories/v2/sundayreview.json?api-key=",my_api_key, sep='' )
+```
+
+### Transform the json files into data frame:
+
+```{r}
+df_BooksReview <- as.data.frame(fromJSON(url))
+head(df_BooksReview)
+df_SundayReview <- as.data.frame(fromJSON(url1))
+head(df_SundayReview)
+```
+
+### Interfacing the data:
+
+```{r}
+CombinedData <- rbind(df_BooksReview,df_SundayReview)
+
+CombinedData <- CombinedData %>%
+  select(results.title,results.abstract,results.url,results.created_date, results.published_date, last_updated,results.section,results.subsection, results.byline, results.des_facet)
+head(CombinedData)
+```
+### Rename the columns of the combined data:
+
+```{r}
+colnames(CombinedData) = c("Title", "Abstract", "URL", "Created_Date", "Published_Date", "Last_Updated", "Section", "Subsection", "Author", "Filtered")
+```
+
+### Remove the string "By" from column Author:
+
+```{r}
+CombinedData$Author <- gsub("By", "", as.character((CombinedData$Author)))
+```
+
+### Breaking the column "Filtered" into a list:
+
+```{r}
+DF_Reviews <- unnest(CombinedData, Filtered)
+head(DF_Reviews)
+```
+
+### Counting the frequency of each facet in "Filtered" column:
+
+```{r}
+freq_DF_Reviews <- as.data.frame(table(DF_Reviews$Filtered))
+colnames(freq_DF_Reviews)[1]="Facets"
+glimpse(freq_DF_Reviews)
+```
+
+
+
+
+
+
