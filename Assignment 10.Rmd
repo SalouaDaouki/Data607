@@ -17,7 +17,6 @@ The goal of this week's assignment is to practice text processing; first, we are
 
 ## Loading the librairies:
 
-
 ```{r librairies}
 library(tidytext)
 library(janeaustenr)
@@ -297,7 +296,7 @@ bing_word_counts1 <- text_df1 %>%
   count(word, sentiment, sort = TRUE) %>%
   ungroup()
 
-bing_word_counts
+bing_word_counts1
 ```
 
 ```{r}
@@ -321,6 +320,7 @@ text_df1 %>%
   count(word) %>%
   with(wordcloud(word, n, max.words = 40))
 ```
+
 ### Another sentiment lexicon:
 
 I typed in the below r chunk "get_sentiments" then four sentiments lexicons appeared, so I picked loughran, because that is the only one I haven't used yet. Let's perform additional sentiment analysis:
@@ -330,6 +330,7 @@ First let's get the sentiment for loughran:
 ```{r}
 get_sentiments("loughran")
 ```
+
 The sentiment of each word using the loughran sentiment lexicon:
 
 ```{r}
