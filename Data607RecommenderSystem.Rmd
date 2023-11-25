@@ -1,0 +1,76 @@
+---
+title: 'Discussion 11: Recommender Systems'
+author: "Saloua Daouki"
+date: "2023-11-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction:
+
+Lately, I have been hearing the word ChatGPT, that makes me wonder what is it. Let me take advantage of this assignment and find out more about this intelligence.
+
+According to [Wikepedia](https://en.wikipedia.org/wiki/ChatGPT), "ChatGPT (Chat Generative Pre-trained Transformer) is a large language model-based chatbot developed by OpenAI and launched on November 30, 2022, that enables users to refine and steer a conversation towards a desired length, format, style, level of detail, and language. Successive prompts and replies, known as prompt engineering, are considered at each conversation stage as a context."
+
+[![ChatGPT is built upon either GPT-3.5 or GPT-4](images/Screen%20Shot%202023-11-24%20at%205.44.55%20PM.png)](https://en.wikipedia.org/wiki/ChatGPT)
+
+ChatGPT "gain[s] 1 million users in the first 5 days and 100 million users in the first couple of months. Here is its timeline since it was launched:
+
+[![](images/Screen%20Shot%202023-11-24%20at%206.02.42%20PM.png)](https://www.demandsage.com/chatgpt-statistics/)
+
+## I. Scenario Design analysis_ChatGPT:
+
+![](images/Screen%20Shot%202023-11-24%20at%205.58.55%20PM.png)
+
+### 1. Who are the target users?
+
+According to [DemandSage](https://www.demandsage.com/chatgpt-statistics/) website; ChatGPT is available in 161 countries around the world (82% of the world countries). There are some countries where ChatGPT is banned (China, Russia,...). Among those countries, 31% of the ChatGPT users are from the United States, while 7.60% are from India.
+
+59.67% of ChatGPT users are males while the remaining 40.33% are females. 64.53% of ChatGPT users are from the 18 to 34 age group.
+
+### 2. What are their key goals?
+
+The key goal of ChatGPT is to generate content that is **human-like text** and enable users to access a broad range of information, topics and tasks. According to [DemandSage](https://www.demandsage.com/chatgpt-statistics/) website, "almost 53% of the people in a survey believed ChatGPT generated content in the fields of finance, health, technology, travel, and entertainment to be either written or edited by humans."
+
+According to Sam Altman (Founder of ChatGPT), to run ChatGPT for OpenAI, it costs a single-digit cents for a single chat with ChatGPT. However, "an AI professor at Maryland University has calculated the daily costs of running ChatGPT to be approximately \$100,000. At the same time, the monthly costs are estimated to be \$3 million."
+
+The predicted revenue that the chatbot will generate is \$200 million by 2023 and \$1 billion by 2024.
+
+### 3. How can you help them accomplish those goals?
+
+To accomplish those goals, ChatGPT is trained on on 300 billion words and on a model that learns from human feedback. There are two models; GPT 3 (which is free) and GPT 4 (costs \$20/month).
+
+## II. Scenario Design analysis_ChatGPT's users:
+
+### 1. Who are the target users?
+
+According to ChatGPT, the target users are students, professionals, researchers, and anyone seeking natural language understanding and generation. The natural language includes conversational interaction, information, or assistance in various tasks.
+
+### 2. What are their key goals?
+
+The users' key goal is to get a versatile and effective natural language interface and being able to communicate in a real time.
+
+### 3. How can you help them accomplish those goals?
+
+ChatGPT helps the users to reach their goals by strengthening the language generation based on the users' inputs. In other words, when the user inputs a text, ChatGPT responds contextually and provides information or answers a question or engages in a conversation.
+
+## III. Reverse Engineering of ChatGPT:
+
+Reverse engineering of the algorithm og ChatGPT is challenging since it is pre-trained on a massive and diverse dataset from the internet.The architecture of ChatGPT is called Transformer, which was introduced by Vaswani et al. in the paper "[Attention is All You Need](https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf)."
+
+Based on the paper mentioned above, "Transformers use self-attention mechanisms to process input data in parallel rather than sequentially. This allows for more efficient training and better capturing of long-range dependencies." Then, when the user inputs a text, it is "tokenized into chunks" and "onverted into a vector representation using an embedding layer"
+
+## VI. Specific Recommendations to improve ChatGPT
+
+ChatGPT is unable to ask clarifying questions to recommend more personalized or specific responses. For example, I asked ChatGPT to "recommend a piece of music to me", The response was (figure below)
+
+![](images/Screen Shot 2023-11-24 at 9.29.51 PM.png)
+
+given based on what is the most popular music. When I asked the same question in a different way; "recommend me some music," the output was a list of recommendations to choose from based on my mood and preferences. I think it will be more convenient if the chatbot asks a question like "what is your current mood?" or "what are your preferences?"
+
+## V. Conclusion:
+
+ChatGPT is growing in terms of number of users compared to social media and search engines. Even though it gives the responses more targeted than the leading search engine, the user is responsible of checking the accuracy of the information provided by the ChatGPT. Unlike human, ChatGPT doesn't understand the words as they are, but it gives responses based on patterns that are learned during the pre-training.
